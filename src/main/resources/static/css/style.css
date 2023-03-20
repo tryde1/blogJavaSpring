@@ -1,0 +1,263 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header {
+    position: sticky;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    width: 100%;
+    background-color: rgb(46, 46, 46);
+}
+
+.logo_header_img {
+    margin: 10px;
+    width: 70px;
+}
+
+.avatar_header_img {
+    width: 35px;
+    border-radius: 50px;
+}
+
+.header_a {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.header_a > .header_text {
+    padding: 10px;
+    padding-top: 23px;
+    text-decoration: none;
+    color: white;
+    transition: 0.5s;
+}
+
+.header_a > .header_avatar {
+    padding: 10px;
+    padding-top: 16px;
+}
+
+.header_a > a:hover {
+    color: rgb(123, 123, 123);
+}
+
+.content {
+    background-color: rgb(34, 34, 34);
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.content > .article {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid black;
+
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.content > .article > .article_content {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.lower_panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.article_buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.article_author {
+    margin-left: 68%;
+    margin-top: 10px;
+
+    font-size: 12px;
+}
+
+.article_buttons > form > button {
+    width: 10px;
+}
+
+
+.create_article {
+    text-decoration: none;
+
+    color: white;
+
+    margin-top: 20px;
+    margin-right: 10px;
+
+    transition: 0.5s;
+}
+
+footer {
+    padding: 10px;
+
+    font-size: 12px;
+
+    background-color: rgb(46, 46, 46);
+    color: black;
+    text-align: center;
+}
+
+.outer {
+    background-color: rgb(34, 34, 34);
+    height: 84.3vh;
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth_inner, .reg_inner {
+    background-color: rgba(255, 255, 255, 0.3);
+
+    border-radius: 10px;
+
+    margin: 0 auto;
+    text-align: center;
+    padding: 30px;
+}
+
+.auth_inner > form > div, .reg_inner > form > div {
+    margin: 2%;
+}
+
+.auth_inner > form > div > input, .reg_inner > form > div > input {
+    font-size: 16px;
+
+    width: 350px;
+}
+
+.auth_btn {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: black;
+
+    border-radius: 10px;
+
+    transition: 0.5s;
+}
+
+.auth_btn:hover {
+    background-color: white;
+}
+
+.auth_a {
+    text-decoration: none;
+    color: white;
+
+    transition: 0.5s;
+}
+
+.auth_a:hover {
+    color: rgb(123, 123, 123);;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.profile_inner {
+    background-color: rgba(255, 255, 255, 0.3);
+
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.profile_form {
+    text-align: center;
+}
+
+.profile_form > div {
+    padding-bottom: 5px;
+}
+
+.profile_form > div > input {
+    font-size: 12px;
+    width: 300px;
+}
+
+.profile_form > div > p {
+    padding-bottom: 5px;
+}
+
+
+.profile_avatar {
+    width: 100px;
+
+    border-radius: 300px;
+    margin-right: 50px;
+}
+
+.profile_accept {
+    margin-top: 20px;
+
+    transition: 0.5s;
+}
+
+.profile_accept:hover {
+    background-color: rgb(110, 110, 110);
+}
+
+.title {
+    text-align: center;
+}
+
+.logout {
+    text-decoration: none;
+    color: white;
+
+    margin-left: 40%;
+
+    transition: 0.5s;
+}
+
+.logout:hover {
+    color: rgb(49, 47, 47);;
+}
+
+.blog_form_buttons {
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 30vh;
+
+    font-size: 12px;
+}
+
+.add_photo > label {
+    font-size: 10px;
+}
+
+.file_input {
+    font-size: 10px;
+}
+
+.avatar {
+    text-align: center;
+}

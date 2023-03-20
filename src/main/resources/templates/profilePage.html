@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Title</title>
+
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div th:insert="~{blocks/header.html :: header}">
+
+</div>
+
+<div class="outer">
+  <div class="profile_inner">
+    <div class="avatar">
+      <img th:src="'/img/avatars/' + ${imgName}" class="profile_avatar">
+    </div>
+
+    <form method="post" th:action="'/profile/' + ${id}" class="profile_form" enctype="multipart/form-data" name="profileForm">
+
+      <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+
+      <div class="form-group form-floating mb-3">
+        <input type="email" class="form-control" name="email" autofocus th:value="${email}" readonly>
+      </div>
+
+      <div class="form-group form-floating mb-3">
+        <input type="name" class="form-control" name="username" placeholder="Name" autofocus
+               th:value="${username}">
+      </div>
+
+      <div class="add_photo">
+        <label>Добавить фотографию</label>
+        <input type="file" name="avatar" class="file_input" id="photo">
+      </div>
+
+      <button type="submit" class="profile_accept">Принять</button>
+      <a th:href="@{/logout}" class="logout">Выйти</a>
+    </form>
+  </div>
+</div>
+
+<div th:insert="~{blocks/footer.html :: footer}">
+</div>
+
+</body>
+</html>
