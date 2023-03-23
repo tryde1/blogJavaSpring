@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.DocFlavor;
 import javax.print.attribute.standard.JobKOctets;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -27,30 +31,31 @@ public class RegistrationController {
 
     @PostMapping(value = "/register")
     public String showProfile (Model model, @RequestParam Map<String, String> data, HttpServletRequest request) {
+
         String username = data.get("username");
-        String email = data.get("email");
         String password = data.get("password");
-        String confPassword = data.get("confirmPassword");
+        String confirmPassword = data.get("confirmPassword");
+        String email = data.get("email");
         String error;
 
         if (Objects.requireNonNull(getUsernames()).contains(username)) {
             error = "existingUsername";
             model.addAttribute("error", error);
-            return "registerPage";
         }
         else if (Objects.requireNonNull(getEmails()).contains(email)) {
             error = "existingEmail";
             model.addAttribute("error", error);
-            return "registerPage";
         }
-        else if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confPassword.isEmpty()) {
+        else if (data.get("password").isEmpty() || data.get("confirmPassword").isEmpty() || data.get("email").isEmpty() || data.get("username").isEmpty()) {
             error = "emptyInput";
             model.addAttribute("error", error);
-            return "registerPage";
-        } else if (!password.equals(confPassword)) {
+        } else if (password.length() <= 6) {
+            error = "invalidPassword";
+            model.addAttribute("error", error);
+        }
+        else if (!data.get("password").equals(data.get("confirmPassword"))) {
             error = "invalidPasswordConfirmation";
             model.addAttribute("error", error);
-            return "registerPage";
         } else {
             User user = new User();
             fillUsersData(username, email, password, user);
@@ -61,15 +66,16 @@ public class RegistrationController {
 
             return "redirect:/profile/" + user.getId();
         }
+        return "registerPage";
     }
 
     private User fillUsersData(String username, String email, String password, User user) {
         LocalDateTime date = LocalDateTime.now();
 
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(password.toString());
         user.setUsername(username);
-        user.setImgName("avatar_logo.jpg");
+        user.setImgName("avatar_logo");
         user.setCreateDate(String.valueOf(date));
         user.setUpdateDate(String.valueOf(date));
 

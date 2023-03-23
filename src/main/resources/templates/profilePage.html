@@ -17,7 +17,7 @@
 <div class="outer">
   <div class="profile_inner">
     <div class="avatar">
-      <img th:src="'/img/avatars/' + ${imgName}" class="profile_avatar">
+      <img th:src="${url}" class="profile_avatar">
     </div>
 
     <form method="post" th:action="'/profile/' + ${id}" class="profile_form" enctype="multipart/form-data" name="profileForm">

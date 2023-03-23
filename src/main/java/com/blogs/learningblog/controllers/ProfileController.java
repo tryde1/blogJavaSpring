@@ -2,30 +2,32 @@ package com.blogs.learningblog.controllers;
 
 import com.blogs.learningblog.models.User;
 import com.blogs.learningblog.repos.UserRepository;
+import com.blogs.learningblog.service.FilesStrorageServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+
 
 @Controller
 public class ProfileController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    FilesStrorageServiceImpl storageService;
     @GetMapping("/profile/{id}")
     public String showProfile(Model model, @PathVariable String id, HttpServletRequest request, @RequestParam Map<String, String> data) {
 
@@ -36,9 +38,13 @@ public class ProfileController {
                 model.addAttribute("id", id);
 
                 User user = userRepository.findById(Long.valueOf(id)).get();
+
+                String url = MvcUriComponentsBuilder
+                        .fromMethodName(ProfileController.class, "getImage", user.getImgName().toString(), id).build().toString();
+
                 model.addAttribute("email", user.getEmail());
                 model.addAttribute("username", user.getUsername());
-                model.addAttribute("imgName", user.getImgName());
+                model.addAttribute("url", url);
 
                 return "profilePage";
             }
@@ -52,36 +58,24 @@ public class ProfileController {
         String username = data.get("username");
         User user = userRepository.findById(Long.valueOf(id)).get();
 
-        String date = String.valueOf(LocalDateTime.now().getSecond());
+        storageService.delete(String.valueOf(user.getId()));
 
-
-        if (!file.isEmpty()) {
-            try {
-
-                String saveDirectory = "C:/Users/я.DESKTOP-CN63JQ9/Documents/Study/SpringBoot/learning-blog/src/main/resources/static/img/avatars/";
-
-                if (!user.getImgName().equals("avatar_logo.jpg"))
-                    Files.delete(Path.of(saveDirectory + user.getImgName()));
-
-                File dir = new File(saveDirectory);
-
-                String filePath = saveDirectory + user.getId() + date + ".jpg";
-                File uploadedFile = new File(filePath);
-                file.transferTo(uploadedFile);
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
+        storageService.save(file, String.valueOf(user.getId()));
 
         user.setUsername(username);
-        user.setImgName(user.getId() + String.valueOf(date) + ".jpg");
+
+        user.setImgName(String.valueOf(user.getId()));
+
         userRepository.save(user);
 
-        model.addAttribute("email", user.getEmail());
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("imgName", user.getImgName());
-        return "profilePage";
+        return "redirect:/profile/" + user.getId();
+    }
+
+    @GetMapping("/profile/{id}/{filename:.+}")
+    public ResponseEntity<Resource> getImage(@PathVariable String filename, @PathVariable String id) {
+        Resource file = storageService.load(filename);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 }
