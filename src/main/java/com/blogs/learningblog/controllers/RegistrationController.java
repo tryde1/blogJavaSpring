@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.DocFlavor;
@@ -33,8 +34,7 @@ public class RegistrationController {
     public String showProfile (Model model, @RequestParam Map<String, String> data, HttpServletRequest request) {
 
         String username = data.get("username");
-        String password = data.get("password");
-        String confirmPassword = data.get("confirmPassword");
+
         String email = data.get("email");
         String error;
 
@@ -49,7 +49,7 @@ public class RegistrationController {
         else if (data.get("password").isEmpty() || data.get("confirmPassword").isEmpty() || data.get("email").isEmpty() || data.get("username").isEmpty()) {
             error = "emptyInput";
             model.addAttribute("error", error);
-        } else if (password.length() <= 6) {
+        } else if (data.get("password").length() <= 6) {
             error = "invalidPassword";
             model.addAttribute("error", error);
         }
@@ -58,7 +58,7 @@ public class RegistrationController {
             model.addAttribute("error", error);
         } else {
             User user = new User();
-            fillUsersData(username, email, password, user);
+            fillUsersData(username, email, DigestUtils.md5DigestAsHex(data.get("password").getBytes()), user);
             userRepository.save(user);
 
             HttpSession session = request.getSession();
