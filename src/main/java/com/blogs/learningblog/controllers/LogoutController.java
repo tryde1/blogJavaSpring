@@ -12,6 +12,7 @@ public class LogoutController {
     public String logoutProfile(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("id");
+        session.removeAttribute("user");
 
         return "redirect:/auth";
     }

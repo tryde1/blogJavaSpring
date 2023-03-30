@@ -23,9 +23,10 @@ public class LoginController {
     @GetMapping("/auth")
     public String showAuth(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
-        if (session.getAttribute("id") != null) {
-            return "redirect:/profile/" + session.getAttribute("id");
+        if (session.getAttribute("user") != null) {
+            return "redirect:/profile/" + user.getId();
         }
         return "authPage";
     }
@@ -43,6 +44,8 @@ public class LoginController {
             if (user.getPassword().equals(password) && user.getEmail().equals(email)) {
 
                 session.setAttribute("id", user.getId());
+
+                session.setAttribute("user", user);
 
                 return "redirect:/profile/" + user.getId();
             }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+  <header class="header">
+    <div class="logo_header">
+      <a href="" class="logo_a">
+        <img th:src="@{/img/header_logo.png}" class="logo_header_img">
+      </a>
+    </div>
+    <div class="header_a">
+      <a href="Создать статью" class="create_article">Создать статья</a>
+      <a href="/profile/{id}" class="header_avatar">
+        <img th:src="${image}" class="avatar_header_img">
+      </a>
+    </div>
+  </header>
+  <div th:each="article : ${articles}">
+    <div class="content">
+      <div class="article">
+          <div class="article_content" th:text="${article.getText()}">
+
+          </div>
+          <div class="lower_panel">
+            <div class="article_buttons">
+                <form th:action="'/article/delete/' + ${article.getId()}" method="post">
+
+                  <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                  <input type="hidden" value="deleteArticle" name="action">
+
+                  <button class="article_btn" type="submit" ><i class="fa fa-trash" style="color: white"></i></button>
+                </form>
+                <div th:if="${article.isHidden() == false}">
+                  <form th:action="'/article/hide/' + ${article.getId()}" method="post">
+
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                    <input type="hidden" value="hideArticle" name="action">
+
+                    <button class="article_btn" type="submit"><i class="fa fa-eye-slash" aria-hidden="true" style="color: white"></i></button>
+                  </form>
+                </div>
+              <div th:if="${article.isHidden() == true}">
+              <form th:action="'/article/show/' + ${article.getId()}" method="post">
+
+                <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                <input type="hidden" value="showArticle" name="action">
+
+                <button class="article_btn" type="submit"><i class="fa fa-eye" aria-hidden="true" style="color: white"></i></button>
+              </form>
+              </div>
+            </div>
+            <p class="article_author" th:text="'Автор: ' + ${article.getAuthor().getUsername()}">Автор:</p>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:insert="~{blocks/footer.html :: footer}">
+  </div>
+</body>
+</html>

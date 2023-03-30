@@ -2,7 +2,7 @@ package com.blogs.learningblog.controllers;
 
 import com.blogs.learningblog.models.User;
 import com.blogs.learningblog.repos.UserRepository;
-import com.blogs.learningblog.service.FilesStrorageServiceImpl;
+import com.blogs.learningblog.service.FilesStorageServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,7 +26,7 @@ public class ProfileController {
     UserRepository userRepository;
 
     @Autowired
-    FilesStrorageServiceImpl storageService;
+    FilesStorageServiceImpl storageService;
     @GetMapping("/profile/{id}")
     public String showProfile(Model model, @PathVariable String id, HttpServletRequest request, @RequestParam Map<String, String> data) {
 
@@ -42,9 +41,13 @@ public class ProfileController {
                 String url = MvcUriComponentsBuilder
                         .fromMethodName(ProfileController.class, "getImage", user.getImgName().toString(), id).build().toString();
 
+                user.setUrl(url);
+                userRepository.save(user);
+
                 model.addAttribute("email", user.getEmail());
                 model.addAttribute("username", user.getUsername());
                 model.addAttribute("url", url);
+                session.setAttribute("user", user);
 
                 return "profilePage";
             }

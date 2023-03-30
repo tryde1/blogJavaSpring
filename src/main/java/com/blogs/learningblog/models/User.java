@@ -1,13 +1,11 @@
 package com.blogs.learningblog.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@Table(name="user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,10 +14,29 @@ public class User {
 
     private String username;
 
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     private String password;
 
     private String email;
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
+
+    private String permissions;
 
     private String imgName;
 

@@ -91,8 +91,12 @@ header {
     font-size: 12px;
 }
 
-.article_buttons > form > button {
+.article_btn {
     width: 10px;
+    margin-right: 10px;
+
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 

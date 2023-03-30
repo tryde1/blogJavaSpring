@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class FilesStrorageServiceImpl {
+public class FilesStorageServiceImpl {
     private final Path root = Paths.get("./uploads");
 
     public void init() {

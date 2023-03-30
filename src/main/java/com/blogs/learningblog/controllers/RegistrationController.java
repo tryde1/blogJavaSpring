@@ -2,21 +2,19 @@ package com.blogs.learningblog.controllers;
 
 import com.blogs.learningblog.models.User;
 import com.blogs.learningblog.repos.UserRepository;
+import com.blogs.learningblog.service.FilesStorageServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import javax.print.DocFlavor;
-import javax.print.attribute.standard.JobKOctets;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -25,8 +23,17 @@ public class RegistrationController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    FilesStorageServiceImpl storageService;
+
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (session.getAttribute("user") != null) {
+            return "redirect:/profile/" + user.getId();
+        }
         return "registerPage";
     }
 
@@ -74,6 +81,7 @@ public class RegistrationController {
 
         user.setEmail(email);
         user.setPassword(password.toString());
+        user.setPermissions("user");
         user.setUsername(username);
         user.setImgName("avatar_logo");
         user.setCreateDate(String.valueOf(date));
